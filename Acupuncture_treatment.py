@@ -525,22 +525,3 @@ class CohortOutcomes:
     def get_CI_total_cost(self, alpha):
         return self._sumStat_total_cost.get_t_CI(alpha)
 
-
-
-SIM_POP_SIZE = 10000
-TIME_STEPS = 365
-ALPHA = 0.05
-# create a cohort of patients
-myCohort = Cohort(id=1, pop_size=SIM_POP_SIZE)
-
-# simulate the cohort
-cohortOutcome = myCohort.simulate(TIME_STEPS)
-
-# print the patient survival time
-print('Average number UTIs:', cohortOutcome.get_ave_number_utis())
-print('95% CI of average number UTIs', cohortOutcome.get_CI_number_utis(ALPHA))
-print('Average treatment cost:', cohortOutcome.get_ave_treatment_cost())
-print('95% CI of treatment cost:', cohortOutcome.get_CI_treatment_cost(ALPHA))
-
-print('AVERAGE TOTAL COST:', cohortOutcome.get_ave_total_cost())
-print('95% CI TOTAL COST:', cohortOutcome.get_CI_total_cost(ALPHA))

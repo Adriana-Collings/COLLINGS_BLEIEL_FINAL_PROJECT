@@ -17,27 +17,27 @@ class Patient:
         self._healthState = HealthStat.NO_UTI
         self._probUTI = expon.cdf(3 * Data.DELTA_T)
         self._countUTIs = 0
-        self._probpyelonphritis = 0.04
+        self._probpyelonphritis = Data.PROB_PYELO
         self._countnopyelonephritis = 0
-        self._proburinalysis = 0.769
+        self._proburinalysis = Data.PROB_URINALYSIS
         self._counturinalysis = 0
         self._countnourinalysis = 0
-        self._probUTIdiagnosed = 0.8481
+        self._probUTIdiagnosed = Data.PROB_UTI_DIAGNOSED
         self._countUTIdiagnosis = 0
         self._noUTIdiagnosis = 0
-        self._probUTIcured = 0.94
+        self._probUTIcured = Data.PROB_UTI_CURED
         self._countUTIcured = 0
         self._countUTInotcured = 0
-        self._probpersistantinfection = 0.96  # inverse of prob of pylonephritis
+        self._probpersistantinfection = Data.PROB_PERSISTANT_INFECTION  # inverse of prob of pylonephritis
         self._countpersistantinfection = 0
         self._countpyelonephritis = 0
-        self._probmodifiedantibiotics = 0.75
+        self._probmodifiedantibiotics = Data.PROB_MODIFIED_ANTIBIOTICS
         self._countmodifiedantibiotics = 0
         self._countextendedtreatment = 0
-        self._probinpatienttreatment = 0.2  # inverse of prob of outpatient treatment
+        self._probinpatienttreatment = Data.PROB_INPATIENT  # inverse of prob of outpatient treatment
         self._countinpatienttreatment = 0
         self._countoutpatienttreatment = 0
-        self._probSTIorvaginitis = 0.291
+        self._probSTIorvaginitis = Data.PROB_STI_OR_VAG
         self._countSTIorvaginitis = 0
         self._countnodisorderpresent = 0
         self._extended_treatment_cost = 0
@@ -217,6 +217,7 @@ class Patient:
 
         return total_costs
 
+
 class Cohort:
     def __init__(self, id, pop_size):
         self._initialPopSize = pop_size
@@ -382,7 +383,6 @@ class CohortOutcomes:
         self._sumStat_costModAnti = Stat.SummaryStat('Cost Modified Antibiotic Treatment:', self._simulatedCohort.get_cost_modantibiotic())
         self._sumStat_countExtended = Stat.SummaryStat('Count Extended Treatment:', self._simulatedCohort.get_count_extended_treat())
         self._sumStat_costExtended = Stat.SummaryStat('Cost Extended Treatment:', self._simulatedCohort.get_cost_extended_treat())
-        #####
         self._sumStat_countPyelo = Stat.SummaryStat('Count Pyelonephritis:', self._simulatedCohort.get_count_pyelo()) #
         self._sumStat_countInpatient = Stat.SummaryStat('Count Inpatient Treatment:', self._simulatedCohort.get_count_inpatient())#
         self._sumStat_costInpatient = Stat.SummaryStat('Cost Inpatient Treatment:', self._simulatedCohort.get_cost_inpatient())#
@@ -527,20 +527,3 @@ class CohortOutcomes:
 
 
 
-SIM_POP_SIZE = 10000
-TIME_STEPS = 365
-ALPHA = 0.05
-# create a cohort of patients
-myCohort = Cohort(id=1, pop_size=SIM_POP_SIZE)
-
-# simulate the cohort
-cohortOutcome = myCohort.simulate(TIME_STEPS)
-
-# print the patient survival time
-print('Average number UTIs:', cohortOutcome.get_ave_number_utis())
-print('95% CI of average number UTIs', cohortOutcome.get_CI_number_utis(ALPHA))
-print('Average treatment cost:', cohortOutcome.get_ave_treatment_cost())
-print('95% CI of treatment cost:', cohortOutcome.get_CI_treatment_cost(ALPHA))
-
-print('AVERAGE TOTAL COST:', cohortOutcome.get_ave_total_cost())
-print('95% CI TOTAL COST:', cohortOutcome.get_CI_total_cost(ALPHA))
